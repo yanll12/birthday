@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на день рождения</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --accent-red: #d32f2f;
+            --card-bg: #1a1a1a;
+            --text-main: #ffffff;
+            --text-secondary: #b3b3b3;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            padding: 40px 15px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-weight: 600;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .intro-text {
+            color: var(--accent-red);
+            font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* Таймер с секундами */
+        .timer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .timer-item {
+            background: var(--card-bg);
+            padding: 12px 5px;
+            border-radius: 12px;
+            border: 1px solid #333;
+        }
+
+        .timer-item span {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .timer-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            text-transform: lowercase;
+        }
+
+        .description-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            border: 1px solid #262626;
+        }
+
+        .details {
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            margin: 15px 0;
+        }
+
+        .detail-item strong {
+            display: block;
+            color: var(--accent-red);
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            margin: 15px 0;
+            border-radius: 50px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .btn-rsvp {
+            background-color: var(--accent-red);
+            color: white;
+        }
+
+        .btn-2gis {
+            background-color: transparent;
+            border: 1px solid #444;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1f1f1f;
+            padding: 25px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 350px;
+            border: 1px solid var(--accent-red);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Лязимай Нуржанова</h1>
+    <p class="intro-text">приглашает вас на день рождения</p>
+
+    <div class="timer">
+        <div class="timer-item">
+            <span id="days">00</span>
+            <div class="timer-label">дней</div>
+        </div>
+        <div class="timer-item">
+            <span id="hours">00</span>
+            <div class="timer-label">часов</div>
+        </div>
+        <div class="timer-item">
+            <span id="mins">00</span>
+            <div class="timer-label">минут</div>
+        </div>
+        <div class="timer-item">
+            <span id="secs">00</span>
+            <div class="timer-label">секунд</div>
+        </div>
+    </div>
+
+    <div class="description-card">
+        Друзья, совсем скоро мне исполнится еще один год! <br><br>
+        Я буду очень рада видеть вас в этот особенный вечер. Давайте создадим классные воспоминания и просто хорошо проведем время вместе.
+    </div>
+
+    <div class="details">
+        <div class="detail-item">
+            <strong>Когда</strong>
+            1 мая 2026, пятница — 19:00
+        </div>
+        <div class="detail-item">
+            <strong>Где</strong>
+            SOPRANO, Сарайшык 13
+        </div>
+    </div>
+
+    <a href="https://2gis.kz/astana/firm/70000001092558674" target="_blank" class="btn btn-2gis">Открыть в 2ГИС</a>
+    <button class="btn btn-rsvp" onclick="showModal()">Мой ответ</button>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h3 style="margin-top: 0; color: var(--accent-red);">Ваш ответ</h3>
+        <form action="https://formspree.io/f/xreroqka" method="POST">
+            <select name="attendance" id="attendance" onchange="checkAttendance()">
+                <option value="Буду">Я приду!</option>
+                <option value="Не смогу">Не смогу прийти</option>
+            </select>
+            
+            <input type="text" name="name" placeholder="Ваше имя" required>
+            
+            <div id="guests-container">
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 10px 0 5px;">С вами будет кто-то ещё?</p>
+                <select name="guests_count">
+                    <option value="0">Приду один / одна</option>
+                    <option value="1">+1 гость</option>
+                    <option value="2">+2 гостя</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-rsvp">Подтвердить</button>
+            <button type="button" class="btn btn-2gis" style="border:none" onclick="hideModal()">Закрыть</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const eventDate = new Date("May 1, 2026 19:00:00").getTime();
+    
+    function updateTimer() {
+        const now = new Date().getTime();
+        const diff = eventDate - now;
+
+        if (diff <= 0) {
+            document.querySelector(".timer").innerHTML = "<div style='grid-column: 1/5; font-weight:600;'>Праздник начался!</div>";
+            return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerText = d.toString().padStart(2, '0');
+        document.getElementById("hours").innerText = h.toString().padStart(2, '0');
+        document.getElementById("mins").innerText = m.toString().padStart(2, '0');
+        document.getElementById("secs").innerText = s.toString().padStart(2, '0');
+    }
+
+    // Запускаем таймер сразу и обновляем каждую секунду
+    updateTimer();
+    setInterval(updateTimer, 1000);
+
+    function showModal() { document.getElementById("modal").style.display = "flex"; }
+    function hideModal() { document.getElementById("modal").style.display = "none"; }
+
+    function checkAttendance() {
+        const val = document.getElementById("attendance").value;
+        const container = document.getElementById("guests-container");
+        container.style.display = (val === "Не смогу") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
