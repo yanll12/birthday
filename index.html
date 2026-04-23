@@ -82,10 +82,29 @@
             font-size: 0.95rem;
         }
 
-        .details {
+        /* Dress Code */
+        .dress-code {
             margin-bottom: 25px;
+            padding: 15px;
+            border: 1px dashed #444;
+            border-radius: 15px;
         }
 
+        .color-dots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #444;
+        }
+
+        .details { margin-bottom: 25px; }
         .detail-item { margin: 12px 0; }
         .detail-item strong {
             display: block;
@@ -135,34 +154,33 @@
             border: 1px solid var(--accent-red);
         }
 
-        /* Выбор статуса (кнопки) */
-        .status-buttons {
+        .choice-group {
             display: flex;
-            gap: 10px;
-            margin: 20px 0;
+            gap: 8px;
+            margin: 10px 0 20px;
         }
 
-        .status-btn {
+        .choice-btn {
             flex: 1;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 12px 5px;
+            border-radius: 10px;
             border: 1px solid #444;
             background: #2a2a2a;
             color: white;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
+            transition: 0.2s;
         }
 
-        .status-btn.active {
+        .choice-btn.active {
             border-color: var(--accent-red);
             background: rgba(211, 47, 47, 0.2);
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 12px;
-            margin-top: 10px;
             background: #2a2a2a;
             border: 1px solid #333;
             border-radius: 8px;
@@ -191,9 +209,19 @@
         Дорогие друзья! Буду очень рада видеть каждого из вас на моем празднике. Давайте проведем этот вечер вместе!
     </div>
 
+    <div class="dress-code">
+        <strong style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-red);">Dress Code</strong>
+        <p style="font-size: 0.85rem; margin: 5px 0;">Черный / Красный / Белый</p>
+        <div class="color-dots">
+            <div class="dot" style="background: #000;"></div>
+            <div class="dot" style="background: #d32f2f;"></div>
+            <div class="dot" style="background: #fff;"></div>
+        </div>
+    </div>
+
     <div class="details">
         <div class="detail-item"><strong>Когда</strong>1 мая 2026, 19:00</div>
-        <div class="detail-item"><strong>Где</strong>Г.Астана, SOPRANO, Сарайшык 13</div>
+        <div class="detail-item"><strong>Где</strong>SOPRANO, Сарайшык 13</div>
     </div>
 
     <a href="https://2gis.kz/astana/firm/70000001092558674" target="_blank" class="btn btn-2gis">Найти в 2ГИС</a>
@@ -202,28 +230,30 @@
 
 <div id="modal" class="modal">
     <div class="modal-content">
-        <h3 style="margin: 0; color: var(--accent-red); font-size: 1.1rem;">Сможете прийти?</h3>
+        <h3 style="margin: 0 0 15px; color: var(--accent-red); font-size: 1.1rem;">Ваш ответ</h3>
         
         <form action="https://formspree.io/f/xreroqka" method="POST" id="rsvpForm">
             <input type="hidden" name="attendance" id="attendanceInput" value="Буду">
+            <input type="hidden" name="guests_count" id="guestsInput" value="0">
 
-            <div class="status-buttons">
-                <button type="button" class="status-btn active" id="btnYes" onclick="setStatus('Буду')">Приду</button>
-                <button type="button" class="status-btn" id="btnNo" onclick="setStatus('Не смогу')">Не смогу</button>
+            <label style="font-size: 0.8rem; opacity: 0.7;">Сможете прийти?</label>
+            <div class="choice-group">
+                <button type="button" class="choice-btn active" id="btnYes" onclick="setAttendance('Буду')">Приду</button>
+                <button type="button" class="choice-btn" id="btnNo" onclick="setAttendance('Не смогу')">Не смогу</button>
             </div>
             
             <input type="text" name="name" placeholder="Ваше имя" required>
             
-            <div id="guests-container">
-                <p style="font-size: 0.75rem; color: var(--text-secondary); margin: 15px 0 5px;">Будете с кем-то?</p>
-                <select name="guests_count">
-                    <option value="0">Приду один / одна</option>
-                    <option value="1">+1 человек</option>
-                    <option value="2">+2 человека</option>
-                </select>
+            <div id="guests-section">
+                <label style="font-size: 0.8rem; opacity: 0.7; display: block; margin-top: 15px;">Количество гостей с вами:</label>
+                <div class="choice-group">
+                    <button type="button" class="choice-btn active" id="g0" onclick="setGuests(0)">Я один</button>
+                    <button type="button" class="choice-btn" id="g1" onclick="setGuests(1)">+1</button>
+                    <button type="button" class="choice-btn" id="g2" onclick="setGuests(2)">+2</button>
+                </div>
             </div>
 
-            <button type="submit" class="btn btn-rsvp" style="margin-top:20px">Отправить ответ</button>
+            <button type="submit" class="btn btn-rsvp" style="margin-top:10px">Отправить ответ</button>
             <button type="button" class="btn-2gis" style="border:none; color: gray; width:100%; cursor:pointer; background:none" onclick="hideModal()">Отмена</button>
         </form>
     </div>
@@ -236,7 +266,6 @@
         const now = new Date().getTime();
         const diff = eventDate - now;
         if (diff <= 0) return;
-
         document.getElementById("days").innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
         document.getElementById("hours").innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
         document.getElementById("mins").innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
@@ -248,21 +277,18 @@
     function showModal() { document.getElementById("modal").style.display = "flex"; }
     function hideModal() { document.getElementById("modal").style.display = "none"; }
 
-    function setStatus(status) {
+    function setAttendance(status) {
         document.getElementById("attendanceInput").value = status;
-        const btnYes = document.getElementById("btnYes");
-        const btnNo = document.getElementById("btnNo");
-        const guestBox = document.getElementById("guests-container");
+        document.getElementById("btnYes").classList.toggle("active", status === 'Буду');
+        document.getElementById("btnNo").classList.toggle("active", status === 'Не смогу');
+        document.getElementById("guests-section").style.display = (status === 'Буду') ? "block" : "none";
+    }
 
-        if (status === 'Буду') {
-            btnYes.classList.add("active");
-            btnNo.classList.remove("active");
-            guestBox.style.display = "block";
-        } else {
-            btnNo.classList.add("active");
-            btnYes.classList.remove("active");
-            guestBox.style.display = "none";
-        }
+    function setGuests(count) {
+        document.getElementById("guestsInput").value = count;
+        [0, 1, 2].forEach(i => {
+            document.getElementById("g" + i).classList.toggle("active", i === count);
+        });
     }
 </script>
 
